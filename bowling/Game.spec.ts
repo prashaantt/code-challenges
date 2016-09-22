@@ -1,4 +1,4 @@
-import { Game } from "../src/Game";
+import { Game } from "./Game";
 const Lab = require("lab");
 const Code = require("code");
 

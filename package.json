@@ -4,12 +4,20 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ts-node -F node_modules/.bin/tape src/**/*.spec.ts",
+    "lint": "tslint src/**/*.ts"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/prashaantt/code-challenges"
   },
   "author": "prashaantt@gmail.com",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/tape": "^4.2.28",
+    "tape": "^4.6.3",
+    "ts-node": "^2.0.0",
+    "tslint": "^4.3.1",
+    "typescript": "^2.1.5"
+  }
 }

@@ -1,4 +1,9 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "nodeTdd.reporter": "tap",
+    "nodeTdd.minimal": true,
+    "nodeTdd.showCoverage": true,
+    "nodeTdd.testScript": "test",
+    "nodeTdd.buildOnActivation": true
 }

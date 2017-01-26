@@ -5,6 +5,9 @@
         "noImplicitAny": true,
         "inlineSourceMap": true,
         "strictNullChecks": true,
-        "alwaysStrict": true
+        "alwaysStrict": true,
+        "lib": [
+            "es2016"
+        ]
     }
 }

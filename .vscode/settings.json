@@ -4,6 +4,6 @@
     "nodeTdd.reporter": "tap",
     "nodeTdd.minimal": true,
     "nodeTdd.showCoverage": true,
-    "nodeTdd.testScript": "test",
+    // "nodeTdd.testScript": "coverage",
     "nodeTdd.buildOnActivation": true
 }

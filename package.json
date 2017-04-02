@@ -6,7 +6,9 @@
   "scripts": {
     "test": "ts-node -F node_modules/.bin/tape src/**/*.spec.ts",
     "coverage": "TS_NODE_FAST=true nyc node_modules/.bin/tape src/**/*.spec.ts",
-    "lint": "tslint src/**/*.ts"
+    "lint": "tslint src/**/*.ts",
+    "build": "tsc",
+    "compile": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -36,10 +38,14 @@
       "ts-node/register"
     ],
     "reporter": [
-      "text-summary",
-      "html"
+      "text-summary"
     ],
     "cache": true
   },
-  "dependencies": {}
+  "dependencies": {
+    "@types/deep-equal": "^0.0.30",
+    "deep-equal": "^1.0.1",
+    "object-hash": "^1.1.5",
+    "typedoc": "^0.5.6"
+  }
 }

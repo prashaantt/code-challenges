@@ -63,5 +63,42 @@ export function fizzbuzz(series: number[]) {
 }
 
 export function luckify(series: number[]) {
-    return reducer(series, fizzbuzzer, fizzer, buzzer, luckifier);
+    return reducer(series, luckifier, fizzbuzzer, fizzer, buzzer);
+}
+
+export function luckifyWithStats(series: number[]) {
+    const luckified = luckify(series);
+    return luckified.concat(statify(luckified)).join(' ');
+}
+
+function statify(series: (number | string)[]) {
+    const tokens = tokenise(series);
+    return `fizz: ${tokens.fizz} buzz: ${tokens.buzz} fizzbuzz: ${tokens.fizzbuzz} lucky: ${tokens.lucky} integer: ${tokens.integer}`;
+}
+
+interface Token {
+    fizz: number;
+    buzz: number;
+    fizzbuzz: number;
+    lucky: number;
+    integer: number;
+}
+
+function tokenise(series: (number | string)[]) {
+    return series.reduce((acc: Token, item: keyof Token | number) => {
+        if (typeof item === 'string') {
+            if (acc[item]) {
+                acc[item]++;
+            } else {
+                acc[item] = 1;
+            }
+        } else {
+            if (acc.integer) {
+                acc.integer++;
+            } else {
+                acc.integer = 1;
+            }
+        }
+        return acc;
+    }, {} as Token);
 }

@@ -5,5 +5,6 @@
     "nodeTdd.showCoverage": true,
     // "nodeTdd.testScript": "coverage",
     "nodeTdd.testScript": "test",
-    "nodeTdd.buildOnActivation": true
+    "nodeTdd.buildOnActivation": true,
+    "nodeTdd.verbose": {"onlyOnFailure": true}
 }

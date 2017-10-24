@@ -1,86 +1,43 @@
-export class Board {
-    private layout: number[][] = [];
-
-    constructor(size: number, layout?: number[][]) {
-        if (layout) {
-            this.validateLayout(size, layout);
-            this.layout = layout;
-        }
-        else {
-            this.init(size);
-        }
-    }
-
-    validateLayout(size: number, layout: number[][]) {
-        if (size !== layout.length) {
-            throw new Error('Invalid layout');
-        }
-        for (let i = 0; i < size; i++) {
-            if (size !== layout[i].length) {
-                throw new Error('Invalid layout');
+export class Life {
+    readonly layout: number[][] = [];
+    private constructor(gridSize: number, inputGame?: number[][], isValidated = true) {
+        if (inputGame) {
+            if (!isValidated) {
+                this.validate(gridSize, inputGame);
             }
+            this.layout = inputGame;
+        } else {
+            this.layout = this.generateRandomGame(gridSize);
         }
     }
 
-    init(size: number) {
-        for (let i = 0; i < size; i++) {
-            for (let j = 0; j < size; j++) {
-                if (!this.layout[i]) {
-                    this.layout.push([]);
-                }
-                this.layout[i][j] = Math.round(Math.random());
-            }
+    static getInstance(gridSize: number, inputGame?: number[][]) {
+        return new Life(gridSize, inputGame, false);
+    }
+
+    getNextGeneration() {
+        const layout = this.layout.map((row, rowIndex) => row.map((col, colIndex) => (getLiveNeighbours(this.layout, rowIndex, colIndex) === 2 ? 1 : 0)));
+        return new Life(layout.length, layout);
+    }
+
+    private generateRandomGame(gridSize: number) {
+        return Array.from(new Array(gridSize), () => Array.from(new Array(gridSize), () => Math.round(Math.random())));
+    }
+
+    private validate(gridSize: number, inputGame: number[][]) {
+        if (inputGame.length !== gridSize || inputGame.some(i => i.length !== gridSize)) {
+            throw new Error('Invalid input!');
         }
     }
+}
 
-    state() {
-        return this.layout;
-    }
+export function getLiveNeighbours(layout: number[][], row: number, col: number) {
+    const startRow = row - 1 >= 0 ? row - 1 : 0;
+    const endRow = row + 1 < layout.length ? row + 1 : layout.length - 1;
+    const startCol = col - 1 >= 0 ? col - 1 : 0;
+    const endCol = col + 1 < layout.length ? col + 1 : layout.length - 1;
 
-    neighbours(row: number, col: number) {
-        const neighbours = [];
+    const neighbours = layout.slice(startRow, endRow + 1).map(row => row.slice(startCol, endCol + 1));
 
-        for (let i = row - 1; i <= row + 1; i++) {
-            for (let j = col - 1; j <= col + 1; j++) {
-                if (i === row && j === col) {
-                    continue;
-                }
-
-                if (this.layout[i] !== undefined && this.layout[i][j] !== undefined) {
-                    neighbours.push(this.layout[i][j]);
-                }
-                else {
-                    neighbours.push(null);
-                }
-            }
-        }
-
-        return neighbours;
-    }
-
-    liveNeighbours(row: number, col: number) {
-        const neighbours = this.neighbours(row, col);
-        return neighbours.reduce((a, b) => b ? a + b : a, 0);
-    }
-
-    nextGenCell(row: number, col: number) {
-        if (this.liveNeighbours(row, col) === 2) {
-            return 1;
-        }
-
-        return 0;
-    }
-
-    nextGen() {
-        const nextLayout: number[][] = [];
-        for (let i = 0; i < this.layout.length; i++) {
-            for (let j = 0; j < this.layout.length; j++) {
-                if (!nextLayout[i]) {
-                    nextLayout.push([]);
-                }
-                nextLayout[i][j] = this.nextGenCell(i, j);
-            }
-        }
-        return nextLayout;
-    }
+    return neighbours.reduce((rowAcc, row) => rowAcc + row.reduce((colAcc, col) => colAcc + col, 0), 0) - layout[row][col];
 }

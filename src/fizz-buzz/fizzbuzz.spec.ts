@@ -1,6 +1,6 @@
 import test = require('tape');
 
-import { isDivisible, numbers, fizzer, buzzer, fizzbuzzer, luckifier, fizzbuzz, luckify } from './fizzbuzz';
+import { isDivisible, numbers, fizzer, buzzer, fizzbuzzer, luckifier, fizzbuzz, luckify, luckifyWithStats } from './fizzbuzz';
 
 test('fizzBuzz', t => {
 
@@ -54,8 +54,17 @@ test('fizzBuzz', t => {
 
     t.test('luckifies fizzbuzz correctly', t => {
         const series = numbers(1, 16);
-        const expected = [1, 2, 'fizz', 4, 'buzz', 'fizz', 7, 8, 'fizz', 'buzz', 11, 'fizz', 'lucky', 14, 'fizzbuzz', 16];
+        const expected = [1, 2, 'lucky', 4, 'buzz', 'fizz', 7, 8, 'fizz', 'buzz', 11, 'fizz', 'lucky', 14, 'fizzbuzz', 16];
         t.deepEqual(luckify(series), expected);
+        t.end();
+    });
+
+    t.test('counts the occurrences of each modifier', t => {
+        const series = numbers(1, 20);
+        const expected = [1, 2, 'lucky', 4, 'buzz', 'fizz', 7, 8, 'fizz', 'buzz', 11, 'fizz',
+            'lucky', 14, 'fizzbuzz', 16, 17, 'fizz', 19, 'buzz', 'fizz: 4', 'buzz: 3',
+            'fizzbuzz: 1', 'lucky: 2', 'integer: 10'].join(' ');
+        t.deepEqual(luckifyWithStats(series), expected);
         t.end();
     });
 });
